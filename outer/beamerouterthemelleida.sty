@@ -1,4 +1,4 @@
-% Copyright 2007 by Till Tantau
+% Copyright 2011 by Paulo J. Matos
 %
 % This file may be distributed and/or modified
 %
@@ -7,212 +7,110 @@
 %
 % See the file doc/licenses/LICENSE for more details.
 
-\ProvidesPackageRCS $Header: /cvsroot/latex-beamer/latex-beamer/themes/outer/beamerouterthemedefault.sty,v 1.14 2007/01/28 20:48:30 tantau Exp $
+\newif\ifbeamer@sb@subsection
+
+\DeclareOptionBeamer{subsection}[true]{\csname beamer@sb@subsection#1\endcsname}
+\ExecuteOptionsBeamer{subsection=true}
+\ProcessOptionsBeamer
+
 
 
 \mode<presentation>
 
+\setbeamercolor{frametitle}{parent=palette primary}
+\setbeamercolor{subsection in head/foot}{parent=palette secondary}
+\setbeamercolor{section in head/foot}{parent=palette quaternary}
 
-% Mini frames
 
-\defbeamertemplateparent{mini frames}{mini frame,mini frame in current subsection}
-{}
+\beamer@compresstrue
 
-\defbeamertemplate*{mini frame}{default}
+\AtBeginDocument{
+  {
+    \usebeamerfont*{headline}
+    \colorlet{global.bg}{bg}
+    \usebeamercolor{subsection in head/foot}
+    \usebeamercolor{section in head/foot}
+    \usebeamercolor{frametitle}
+
+    \ifbeamer@sb@subsection
+      \pgfdeclareverticalshading{beamer@barshade}{\the\paperwidth}{%
+         color(0ex)=(global.bg);%
+         color(1ex)=(subsection in head/foot.bg);%
+         color(3.25ex)=(subsection in head/foot.bg);%
+         color(4.25ex)=(section in head/foot.bg);%
+         color(9.75ex)=(section in head/foot.bg)%
+       }
+       \pgfdeclareverticalshading{beamer@aboveframetitle}{\the\paperwidth}{%
+         color(0ex)=(frametitle.bg);%
+         color(1ex)=(frametitle.bg);%
+         color(2ex)=(subsection in head/foot.bg)
+       }
+    \else
+      \pgfdeclareverticalshading{beamer@barshade}{\the\paperwidth}{%
+         color(0ex)=(global.bg);%
+         color(1ex)=(section in head/foot.bg);%
+         color(7ex)=(section in head/foot.bg)%
+       }
+     \pgfdeclareverticalshading{beamer@aboveframetitle}{\the\paperwidth}{%
+         color(0ex)=(frametitle.bg);%
+         color(1ex)=(frametitle.bg);%
+         color(2ex)=(section in head/foot.bg)
+       }
+    \fi  
+
+    \pgfdeclareverticalshading{beamer@belowframetitle}{\the\paperwidth}{%
+      color(0ex)=(global.bg);%
+      color(1ex)=(frametitle.bg)
+    }
+  }
+}
+
+                                % Head
+\defbeamertemplate*{headline}{smoothbars theme}
 {%
-  \begin{pgfpicture}{0pt}{0pt}{0.1cm}{0.1cm}
-    \pgfpathcircle{\pgfpoint{0.05cm}{0.05cm}}{0.05cm}
-    \pgfusepath{fill,stroke}
-  \end{pgfpicture}%
-}
-[action]
-{
-  \setbeamersize{mini frame size=.14cm,mini frame offset=.03cm}
-}
+  \pgfuseshading{beamer@barshade}%
+  \ifbeamer@sb@subsection%
+    \vskip-9.75ex%
+  \else%
+    \vskip-7ex%
+  \fi%
+  \begin{beamercolorbox}[ignorebg,ht=2.25ex,dp=3.75ex]{section in head/foot}
+    \insertnavigation{\paperwidth}
+  \end{beamercolorbox}%
+  \ifbeamer@sb@subsection%
+    \begin{beamercolorbox}[ignorebg,ht=2.125ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{subsection in head/foot}
+      \usebeamerfont{subsection in head/foot}\insertsubsectionhead
+    \end{beamercolorbox}%
+  \fi%
+}%
 
-\defbeamertemplate*{mini frame in current subsection}{default}
+
+\defbeamertemplate*{frametitle}{smoothbars theme}
 {%
-  \begin{pgfpicture}{0pt}{0pt}{0.1cm}{0.1cm}
-    \pgfpathcircle{\pgfpoint{0.05cm}{0.05cm}}{0.05cm}
-    \pgfusepath{stroke}
-  \end{pgfpicture}%
-}
-
-\defbeamertemplate*{mini frame in other subsection}{default}[1][50]
-{\color{fg!#1!bg}\usebeamertemplate{mini frame in current subsection}}
-
-
-
-
-% Navigation symbols
-
-\defbeamertemplate*{navigation symbols}{default}
-{%
-  \hbox{%
-    \hbox{\insertslidenavigationsymbol}
-    \hbox{\insertframenavigationsymbol}
-    \hbox{\insertsubsectionnavigationsymbol}
-    \hbox{\insertsectionnavigationsymbol}
-    \hbox{\insertdocnavigationsymbol}
-    \hbox{\insertbackfindforwardnavigationsymbol}%
-  }%
-}
-
-% No navigation symbols in handout or trans mode:
-\only<handout| trans>{\setbeamertemplate{navigation symbols}{}}
-
-
-
-% Section and subsections in head/foot
-
-\defbeamertemplate*{section in head/foot}{default}
-{\insertsectionhead}
-
-\defbeamertemplate*{section in head/foot shaded}{default}[1][50]
-{\color{fg!#1!bg}\usebeamertemplate{section in head/foot}}
-
-\defbeamertemplate*{subsection in head/foot}{default}
-{\insertsubsectionhead}
-
-\defbeamertemplate*{subsection in head/foot shaded}{default}[1][50]
-{\color{fg!#1!bg}\usebeamertemplate{subsection in head/foot}}
-
-\defbeamertemplate*{subsubsection in head/foot}{default}
-{\insertsubsubsectionhead}
-
-\defbeamertemplate*{subsubsection in head/foot shaded}{default}[1][50]
-{\color{fg!#1!bg}\usebeamertemplate{subsubsection in head/foot}}
-
-
-
-
-
-% Headline and footline
-
-\defbeamertemplate*{headline}{default}
-{}
-
-\defbeamertemplate*{footline}{default}
-{}
-
-
-% background
-
-\defbeamertemplate*{background}{default}
-{}
-
-\defbeamertemplate*{background canvas}{default}
-{%
-  \ifbeamercolorempty[bg]{background canvas}{}{\color{bg}\vrule width\paperwidth height\paperheight}%
-}
-
-
-% Sidebar
-
-\defbeamertemplate*{sidebar left}{default}
-{}
-
-\defbeamertemplate*{sidebar right}{default}
-{
-  \vfill%
-  \llap{\insertlogo\hskip0.1cm}%
-  \vskip2pt%
-  \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
-  \vskip2pt%
-}
-
-\defbeamertemplate*{sidebar canvas left}{default}
-{%
-  \ifbeamercolorempty[bg]{sidebar left}{}
-  {\color{bg}\vrule height\sidebarheight width\beamer@leftsidebar}%
-}
-
-\defbeamertemplate*{sidebar canvas right}{default}
-{%
-  \ifbeamercolorempty[bg]{sidebar right}{}
-  {\color{bg}\vrule height\sidebarheight width\beamer@rightsidebar}%
-}
-
-
-
-% Frame title: default
-
-\defbeamertemplate*{frametitle}{default}[1][left]
-{
-  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
-  \@tempdima=\textwidth%
-  \advance\@tempdima by\beamer@leftmargin%
-  \advance\@tempdima by\beamer@rightmargin%
-  \begin{beamercolorbox}[sep=0.3cm,#1,wd=\the\@tempdima]{frametitle}
-    \usebeamerfont{frametitle}%
-    \vbox{}\vskip-1ex%
-    \if@tempswa\else\csname beamer@fte#1\endcsname\fi%
-    \strut\insertframetitle\strut\par%
-    {%
+  \nointerlineskip%
+  \usebeamerfont{headline}%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.5ex,dp=0ex,vmode]{empty}
+    \pgfuseshading{beamer@aboveframetitle}%
+  \end{beamercolorbox}%
+  \vskip-.5ex%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=.3cm,rightskip=.3cm plus1fil,vmode]{frametitle}
+    \usebeamerfont*{frametitle}\insertframetitle%
       \ifx\insertframesubtitle\@empty%
-      \else%
-      {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
-      \fi
-    }%
-    \vskip-1ex%
-    \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+        \strut\par%
+      \else
+        \par{\usebeamerfont*{framesubtitle}{\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}\strut\par}%
+      \fi%%
+    \usebeamerfont{headline}%
+    \vskip.5ex  
+  \end{beamercolorbox}%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=.5ex,dp=0ex]{empty}
+    \pgfuseshading{beamer@belowframetitle}%
   \end{beamercolorbox}%
 }
-
-\def\beamer@fteright{\vskip0.35cm\advance\leftskip by 1.7cm\advance\rightskip by1.7cm}
-
-
-% Frame title continuations, default
-
-\defbeamertemplate*{frametitle continuation}{default}{\insertcontinuationcountroman}
-
-
-
-% Notes
-
-\defbeamertemplate*{note page}{default}
-{%
-  {%
-    \scriptsize
-    \insertvrule{.25\paperheight}{white!90!black}
-    \vskip-.25\paperheight
-    \nointerlineskip
-    \vbox{
-      \hfill\insertslideintonotes{0.25}\hskip-\Gm@rmargin\hskip0pt%
-      \vskip-0.25\paperheight%
-      \nointerlineskip
-      \begin{pgfpicture}{0cm}{0cm}{0cm}{0cm}
-        \begin{pgflowlevelscope}{\pgftransformrotate{90}}
-          {\pgftransformshift{\pgfpoint{-2cm}{0.2cm}}%
-          \pgftext[base,left]{\footnotesize\the\year-\ifnum\month<10\relax0\fi\the\month-\ifnum\day<10\relax0\fi\the\day}}
-        \end{pgflowlevelscope}
-      \end{pgfpicture}}
-    \nointerlineskip
-    \vbox to .25\paperheight{\vskip0.5em
-      \hbox{\insertshorttitle[width=8cm]}%
-      \setbox\beamer@tempbox=\hbox{\insertsection}%
-      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip4pt\raise3pt\hbox{\vrule
-            width0.4pt height7pt\vrule width 9pt
-            height0.4pt}}\hskip1pt\hbox{\begin{minipage}[t]{7.5cm}\def\breakhere{}\insertsection\end{minipage}}\fi%
-      }%
-      \setbox\beamer@tempbox=\hbox{\insertsubsection}%
-      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip17.4pt\raise3pt\hbox{\vrule
-            width0.4pt height7pt\vrule width 9pt
-            height0.4pt}}\hskip1pt\hbox{\begin{minipage}[t]{7.5cm}\def\breakhere{}\insertsubsection\end{minipage}}\fi%
-      }%
-      \setbox\beamer@tempbox=\hbox{\insertshortframetitle}%
-      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip30.8pt\raise3pt\hbox{\vrule
-            width0.4pt height7pt\vrule width 9pt
-            height0.4pt}}\hskip1pt\hbox{\insertshortframetitle[width=7cm]}\fi%
-      }%
-      \vfil}%
-  }%
-  \vskip.25em
-  \nointerlineskip
-  \insertnote
-}
-
-
-
+  
+  
 \mode
 <all>
