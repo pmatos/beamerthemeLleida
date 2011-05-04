@@ -7,110 +7,46 @@
 %
 % See the file doc/licenses/LICENSE for more details.
 
-\newif\ifbeamer@sb@subsection
-
-\DeclareOptionBeamer{subsection}[true]{\csname beamer@sb@subsection#1\endcsname}
-\ExecuteOptionsBeamer{subsection=true}
-\ProcessOptionsBeamer
-
-
-
 \mode<presentation>
 
-\setbeamercolor{frametitle}{parent=palette primary}
-\setbeamercolor{subsection in head/foot}{parent=palette secondary}
-\setbeamercolor{section in head/foot}{parent=palette quaternary}
+\setbeamercolor*{author in head/foot}{parent=palette tertiary}
+\setbeamercolor*{date in head/foot}{parent=palette primary}
 
+\setbeamercolor*{title in head/foot}{parent=palette tertiary}
+\setbeamercolor*{frametitle in head/foot}{parent=palette primary}
 
-\beamer@compresstrue
+\providecommand\insertframetitle{}
 
-\AtBeginDocument{
-  {
-    \usebeamerfont*{headline}
-    \colorlet{global.bg}{bg}
-    \usebeamercolor{subsection in head/foot}
-    \usebeamercolor{section in head/foot}
-    \usebeamercolor{frametitle}
-
-    \ifbeamer@sb@subsection
-      \pgfdeclareverticalshading{beamer@barshade}{\the\paperwidth}{%
-         color(0ex)=(global.bg);%
-         color(1ex)=(subsection in head/foot.bg);%
-         color(3.25ex)=(subsection in head/foot.bg);%
-         color(4.25ex)=(section in head/foot.bg);%
-         color(9.75ex)=(section in head/foot.bg)%
-       }
-       \pgfdeclareverticalshading{beamer@aboveframetitle}{\the\paperwidth}{%
-         color(0ex)=(frametitle.bg);%
-         color(1ex)=(frametitle.bg);%
-         color(2ex)=(subsection in head/foot.bg)
-       }
-    \else
-      \pgfdeclareverticalshading{beamer@barshade}{\the\paperwidth}{%
-         color(0ex)=(global.bg);%
-         color(1ex)=(section in head/foot.bg);%
-         color(7ex)=(section in head/foot.bg)%
-       }
-     \pgfdeclareverticalshading{beamer@aboveframetitle}{\the\paperwidth}{%
-         color(0ex)=(frametitle.bg);%
-         color(1ex)=(frametitle.bg);%
-         color(2ex)=(section in head/foot.bg)
-       }
-    \fi  
-
-    \pgfdeclareverticalshading{beamer@belowframetitle}{\the\paperwidth}{%
-      color(0ex)=(global.bg);%
-      color(1ex)=(frametitle.bg)
-    }
-  }
+\defbeamertemplate*{footline}{lleida theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.75\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~(\insertshortinstitute)
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
 }
 
-                                % Head
-\defbeamertemplate*{headline}{smoothbars theme}
-{%
-  \pgfuseshading{beamer@barshade}%
-  \ifbeamer@sb@subsection%
-    \vskip-9.75ex%
-  \else%
-    \vskip-7ex%
-  \fi%
-  \begin{beamercolorbox}[ignorebg,ht=2.25ex,dp=3.75ex]{section in head/foot}
-    \insertnavigation{\paperwidth}
+\defbeamertemplate*{headline}{lleida theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,right]{title in head/foot}%
+    \usebeamerfont{section in head/foot}\inserttitle\hspace*{2ex}
   \end{beamercolorbox}%
-  \ifbeamer@sb@subsection%
-    \begin{beamercolorbox}[ignorebg,ht=2.125ex,dp=1.125ex,%
-      leftskip=.3cm,rightskip=.3cm plus1fil]{subsection in head/foot}
-      \usebeamerfont{subsection in head/foot}\insertsubsectionhead
-    \end{beamercolorbox}%
-  \fi%
-}%
-
-
-\defbeamertemplate*{frametitle}{smoothbars theme}
-{%
-  \nointerlineskip%
-  \usebeamerfont{headline}%
-  \begin{beamercolorbox}[wd=\paperwidth,ht=1.5ex,dp=0ex,vmode]{empty}
-    \pgfuseshading{beamer@aboveframetitle}%
-  \end{beamercolorbox}%
-  \vskip-.5ex%
-  \nointerlineskip%
-  \begin{beamercolorbox}[wd=\paperwidth,leftskip=.3cm,rightskip=.3cm plus1fil,vmode]{frametitle}
-    \usebeamerfont*{frametitle}\insertframetitle%
-      \ifx\insertframesubtitle\@empty%
-        \strut\par%
-      \else
-        \par{\usebeamerfont*{framesubtitle}{\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}\strut\par}%
-      \fi%%
-    \usebeamerfont{headline}%
-    \vskip.5ex  
-  \end{beamercolorbox}%
-  \nointerlineskip
-  \begin{beamercolorbox}[wd=\paperwidth,ht=.5ex,dp=0ex]{empty}
-    \pgfuseshading{beamer@belowframetitle}%
-  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.75\paperwidth,ht=2.25ex,dp=1ex,left]{frametitle in head/foot}%
+    \usebeamerfont{frametitle in head/foot}\hspace*{2ex}\insertframetitle
+  \end{beamercolorbox}}%
+  \vskip0pt%
 }
-  
-  
+
+\setbeamertemplate{frametitle}{}
+
+\setbeamersize{text margin left=1em,text margin right=1em}
+
 \mode
 <all>

@@ -6,11 +6,9 @@
 % 2. under the GNU Public License.
 %
 % See the file doc/licenses/LICENSE for more details.
-
-\DeclareOptionBeamer{stillsansserifmath}[]{\def\mathfamilydefault{\sfdefault}\beamer@sansmathtrue}
-\DeclareOptionBeamer{stillsansserifsmall}[]{\def\beamer@tsfont{\sffamily}}
-\DeclareOptionBeamer{stillsansseriflarge}[]{\def\beamer@sfont{\sffamily}}
-\DeclareOptionBeamer{stillsansseriftext}[]{\def\familydefault{\sfdefault}}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{concmath}
 
 \DeclareOptionBeamer{onlymath}[]{
   \def\beamer@tsfont{\sffamily}
@@ -20,7 +18,7 @@
 
 \def\beamer@tsfont{\rmfamily}
 \def\beamer@sfont{\rmfamily}
-\def\familydefault{\rmdefault}
+\def\familydefault{\ttdefault}
 \def\mathfamilydefault{\rmdefault}
 \beamer@sansmathfalse
 
@@ -28,3 +26,11 @@
 
 \setbeamerfont{tiny structure}{family=\beamer@tsfont}
 \setbeamerfont{structure}{family=\beamer@sfont}
+
+\setbeamerfont{enumerate item}{family=\ttfamily}
+\setbeamerfont{enumerate subitem}{family=\ttfamily}
+\setbeamerfont{enumerate subsubitem}{family=\ttfamily}
+
+\setbeamerfont{itemize item}{family=\ttfamily}
+\setbeamerfont{itemize subitem}{family=\ttfamily}
+\setbeamerfont{itemize subsubitem}{family=\ttfamily}

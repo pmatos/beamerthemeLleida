@@ -7,20 +7,23 @@
 %
 % See the file doc/licenses/LICENSE for more details.
 
-\DeclareOptionBeamer{shadow}[true]{\def\beamer@themerounded@shadow{#1}}
-\ExecuteOptionsBeamer{shadow=false}
-\ProcessOptionsBeamer
-
 \mode<presentation>
 
-\setbeamertemplate{blocks}[rounded][shadow=\beamer@themerounded@shadow]
-\setbeamertemplate{items}[ball]
-\setbeamertemplate{sections/subsections in toc}[ball]
-\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true,shadow=\beamer@themerounded@shadow]
-\setbeamertemplate{part page}[default][colsep=-4bp,rounded=true,shadow=\beamer@themerounded@shadow]
-  
-\mode<all>
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded]
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
+\setbeamertemplate{part page}[default][colsep=-4bp,rounded=true]
 
-%%% Local Variables: 
-%%% TeX-master: "~/texmf/tex/latex/beamer/test/test.tex"
-%%% End: 
+% Items
+
+\setbeamertemplate{itemize item}{\scriptsize\hbox{*}}
+\setbeamertemplate{itemize subitem}{\tiny\hbox{**}}
+\setbeamertemplate{itemize subsubitem}{\tiny\hbox{***}}
+
+% Enumerate items
+
+\setbeamertemplate{enumerate item}{\scriptsize\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\tiny\insertenumlabel.\insertsubenumlabel}
+\setbeamertemplate{enumerate subsubitem}{\tiny\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+
+\mode<all>
